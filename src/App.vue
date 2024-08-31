@@ -1,10 +1,10 @@
 <script setup>
-
+import task1 from './components/task1.vue'
 </script>
 
 <template>
   <main>
-
+    <task1 />
   </main>
 </template>
 
