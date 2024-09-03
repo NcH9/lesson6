@@ -1,10 +1,14 @@
 <script setup>
 import task1 from './components/task1.vue'
+import router from './router/index';
 </script>
 
 <template>
   <main>
-    <task1 />
+    <RouterView />
+
+    <RouterLink to="/"><v-btn>1</v-btn></RouterLink>
+    <RouterLink :to="{name: 'page2'}"><v-btn>2</v-btn></RouterLink>
   </main>
 </template>
 

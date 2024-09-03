@@ -13,6 +13,7 @@ const vuetify = createVuetify({
 })
 
 import App from './App.vue';
+import router from './router/index';
 
 const pinia = createPinia();
 
@@ -20,4 +21,6 @@ const app = createApp(App);
 
 app.use(vuetify);
 app.use(pinia);
+app.use(router);
+
 app.mount('#app');
