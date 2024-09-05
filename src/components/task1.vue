@@ -21,42 +21,67 @@
         <button @click="decrement">-</button>
     </div>
     <div class="task">
-        <song 
-            v-for="(song, index) in products" :key="index"
-            :song="song"
-        /> 
-        <button @click="prevPage" :disabled="getCurrentPage === 1">Попередня</button>
-        <button @click="nextPage" :disabled="getCurrentPage === getTotalPages">Наступна</button>
-        <p>Сторінка {{ getCurrentPage }} з {{ getTotalPages }}</p>
+        <song  
+            v-for="song in songsToShow"
+            :song="song" 
+        />
+        <button @click="prevItems" :disabled="!canPrev">Previous</button>
+        <button @click="nextItems" :disabled="!canNext">Next</button>
     </div>
+
 </template>
 
 <script type="module">
 import song from './song.vue';
 import { mapActions, mapState } from 'pinia';
-import { useProductStore } from '../store/ProductStore';
-import { useCounter } from '@/store/counterStore';
+import { useProductStore } from '@/store/ProductStore';
+import { useCounter } from '../store/counterStore';
 
 export default {
     name: 'task1',
     data(){
         return {
-
+            songsToShow: [],
+            songsPerPage: 5,
+            currentSong: 0,
         }
     },
     methods: {
         ...mapActions(useProductStore, ['getProducts', 'getCounter', 'increaseCounter', 'decreaseCounter']),
         ...mapActions(useCounter, ['increment', 'decrement']),
-        ...mapActions(useProductStore, ['nextPage', 'prevPage']),
+        
+        nextItems() {
+            if (this.canNext()) {
+                this.currentSong += this.songsPerPage;
+                this.currentSongs();
+            }
+        },
+        prevItems() {
+            if (this.canPrev()) {
+                this.currentSong -= this.songsPerPage;
+                this.currentSongs();
+            }
+        },
+        currentSongs() {
+            this.songsToShow = this.products.slice(this.currentSong, this.currentSong + this.songsPerPage);
+        },
+        canPrev() {
+            return ((this.currentSong - this.songsPerPage) >= 0);
+        },
+        canNext() {
+            return ((this.currentSong + this.songsPerPage) <= this.songsToShow.length);
+        },
     },
-    mounted(){
-        this.getProducts();
+    async mounted(){
         this.getCounter();
+        await this.getProducts();
+        this.songsToShow = this.products;
+        this.currentSongs();
+        console.log(this.songsToShow);
     },
     computed: {
         ...mapState(useProductStore, ['products', 'counterValue', 'counterDoubleValue']),
         ...mapState(useCounter, ['value']),
-        ...mapState(useProductStore, ['getCurrentPage', 'getTotalPages']),
     },
     components: {
         song,
@@ -66,9 +91,6 @@ export default {
 </script>
 
 <style scoped>
-.asd{
-    margin: 20px;
-}
 .padding{
     display: flex;
     justify-content: center;

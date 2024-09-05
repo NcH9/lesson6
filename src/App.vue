@@ -6,13 +6,25 @@ import router from './router/index';
 <template>
   <main>
     <RouterView />
-
-    <RouterLink to="/"><v-btn>1</v-btn></RouterLink>
-    <RouterLink :to="{name: 'page2'}"><v-btn>2</v-btn></RouterLink>
+    <div class="bubble">
+      <RouterLink to="/"><v-btn>1</v-btn></RouterLink>
+      <RouterLink :to="{name: 'page2'}"><v-btn>2</v-btn></RouterLink>
+    </div>
+    
   </main>
 </template>
 
 <style scoped>
+.bubble {
+  background-color: rgb(59, 59, 59);
+  box-shadow: 3px -3px 5px gray;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  place-items: center;
+  margin: 15px;
+  padding: 15px;
+}
 header {
   line-height: 1.5;
 }
